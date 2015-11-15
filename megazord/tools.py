@@ -107,11 +107,9 @@ class CCompiler(GenericCompiler):
         for compiled_lib_path in set(compiled_lib_paths):
             args.add_library_path(compiled_lib_path)
 
+        args.set_output_name(target.output_dir + target.output)
         if target.output_format in ['.so', '.dylib'] and not target.output.startswith('lib'):
-            args.set_output_name(target.output_dir + 'lib' + target.output)
-            megazord.system.create_symlink(target.output_dir + 'lib' + target.output, target.output_dir + target.output)
-        else:
-            args.set_output_name(target.output_dir + target.output)
+            megazord.system.create_symlink(target.output_dir + target.output, target.output_dir + 'lib' + target.output)
 
         args.append('-O{}'.format(target.optimization_level))
         for library_path in target.library_paths:
