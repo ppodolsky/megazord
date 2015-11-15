@@ -1,0 +1,6 @@
+.idea/*
+*__pycache__*
+test/*
+.megazord/*
+deploy.sh
+dist/*
