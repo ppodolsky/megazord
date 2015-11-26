@@ -22,9 +22,12 @@ def get_tool_by_language(language):
 
     if language in tool_by_language:
         for tool_name in tool_by_language[language]:
-            tool = get_tool_by_name(tool_name)
-            if tool is not None:
-                return tool
+            try:
+                tool = get_tool_by_name(tool_name)
+                if tool is not None:
+                    return tool
+            except:
+                continue
     return None
 
 

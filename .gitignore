@@ -4,3 +4,4 @@ test/*
 .megazord/*
 deploy.sh
 dist/*
+megazord/__pycache__/*
