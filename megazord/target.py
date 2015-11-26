@@ -30,6 +30,7 @@ class Target:
         self.includies = []
         self.library_paths = []
         self.include_paths = []
+        self.options = []
         self.dependencies = []
 
     def add_include(self, names):
@@ -58,6 +59,13 @@ class Target:
             self.library_paths.extend(paths)
         else:
             self.library_paths.append(paths)
+        return self
+
+    def add_options(self, options):
+        if isinstance(options, list):
+            self.options.extend(options)
+        else:
+            self.options.append(options)
         return self
 
     def add_support(self, objs):
