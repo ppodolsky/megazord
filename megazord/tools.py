@@ -66,6 +66,10 @@ class CCompiler(GenericCompiler):
             self.append('-l{}'.format(name))
             return self
 
+        def add_option(self, option):
+            self.append('-f{}'.format(option))
+            return self
+
         def set_output_name(self, name):
             self.append('-o{}'.format(name))
             return self
@@ -120,6 +124,8 @@ class CCompiler(GenericCompiler):
             args.add_library(library)
         for include in target.includies:
             args.add_include(include)
+        for option in target.options:
+            args.add_option(option)
         return args
 
 class DmdCompiler(GenericCompiler):
