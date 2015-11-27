@@ -3,8 +3,8 @@ import re
 
 
 def include_paths(name):
-    database = {'python': ('python', 'includes', r"-I(.*?)(?=\s-I|$)"),
-                'python3': ('python3', 'includes', r"-I(.*?)(?=\s-I|$)"),
+    database = {'python': ('python', 'includes', r"-I(.*?)(?=\s|$)"),
+                'python3': ('python3', 'includes', r"-I(.*?)(?=\s|$)"),
                 'root': ('root', 'incdir', None)}
     if name in database.keys():
         config = database[name]
@@ -100,9 +100,9 @@ def get_language_by(extensions):
 
 
 def library(name):
-    database = {'python': ('python', 'libs', r"-l(.*?)(?=\s-|$)"),
-                'python3': ('python3', 'libs', r"-l(.*?)(?=\s-|$)"),
-                'root': ('root', 'libs', r"\s-l(.*?)(?=\s-|$)")}
+    database = {'python': ('python', 'libs', r"-l(.*?)(?=\s|$)"),
+                'python3': ('python3', 'libs', r"-l(.*?)(?=\s|$)"),
+                'root': ('root', 'libs', r"\s-l(.*?)(?=\s|$)")}
     if name in database.keys():
         config = database[name]
         return get_config(*config)
@@ -111,8 +111,8 @@ def library(name):
 
 
 def library_paths(name):
-    database = {'python': ('python', 'ldflags', r"-L(.*?)(?=\s-l|$)"),
-                'python3': ('python3', 'ldflags', r"-L(.*?)(?=\s-l|$)"),
+    database = {'python': ('python', 'ldflags', r"-L(.*?)(?=\s|$)"),
+                'python3': ('python3', 'ldflags', r"-L(.*?)(?=\s|$)"),
                 'root': ('root', 'libdir', None)}
     if name in database.keys():
         config = database[name]
