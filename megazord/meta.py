@@ -102,7 +102,7 @@ def get_language_by(extensions):
 def library(name):
     database = {'python': ('python', 'libs', r"-l(.*?)(?=\s-|$)"),
                 'python3': ('python3', 'libs', r"-l(.*?)(?=\s-|$)"),
-                'root': ('root', 'libs', r"-l(.*?)(?=\s-|$)")}
+                'root': ('root', 'libs', r"\s-l(.*?)(?=\s-|$)")}
     if name in database.keys():
         config = database[name]
         return get_config(*config)
