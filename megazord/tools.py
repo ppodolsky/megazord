@@ -97,6 +97,8 @@ class CCompiler(GenericCompiler):
         args.append('-O{}'.format(target.optimization_level))
         args.set_output_name(target.output_dir + target.output)
         args.set_target(target.get_sources(), target.output_format)
+        if target.output_format in ['.so', '.dylib'] and not target.output.startswith('lib'):
+            megazord.system.create_symlink(target.output_dir + target.output, target.output_dir + 'lib' + target.output)
         compiled_lib_paths = []
         for dependency in target.dependencies:
             if dependency.output_format == '.o':
@@ -111,13 +113,8 @@ class CCompiler(GenericCompiler):
                 raise ValueError("{} cannot be processed as dependency for {}. "
                                  "Did you forget to set output format for dependency to '.o'?".format(
                     dependency.sources))
-
-        if target.output_format in ['.so', '.dylib'] and not target.output.startswith('lib'):
-            megazord.system.create_symlink(target.output_dir + target.output, target.output_dir + 'lib' + target.output)
-        for compiled_lib_path in set(compiled_lib_paths):
-            args.add_library_path(compiled_lib_path)
-        for library_path in megazord.utils.unique_everseen(target.library_paths):
-            args.add_library_path(library_path)
+        for lib_path in megazord.utils.unique_everseen(compiled_lib_paths + target.library_paths):
+            args.add_library_path(lib_path)
         for include_path in megazord.utils.unique_everseen(target.include_paths):
             args.add_include_path(include_path)
         for library in megazord.utils.unique_everseen(target.libraries):
