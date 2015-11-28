@@ -18,3 +18,8 @@ def reduce_hash(hashlist, hashfunc):
     for hashvalue in sorted(hashlist):
         hasher.update(hashvalue.encode('utf-8'))
     return hasher.hexdigest()
+
+def unique_everseen(seq):
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]

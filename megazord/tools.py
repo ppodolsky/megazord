@@ -116,15 +116,15 @@ class CCompiler(GenericCompiler):
             megazord.system.create_symlink(target.output_dir + target.output, target.output_dir + 'lib' + target.output)
 
         args.append('-O{}'.format(target.optimization_level))
-        for library_path in set(target.library_paths):
+        for library_path in megazord.utils.unique_everseen(target.library_paths):
             args.add_library_path(library_path)
-        for include_path in set(target.include_paths):
+        for include_path in megazord.utils.unique_everseen(target.include_paths):
             args.add_include_path(include_path)
-        for library in set(target.libraries):
+        for library in megazord.utils.unique_everseen(target.libraries):
             args.add_library(library)
-        for include in set(target.includies):
+        for include in megazord.utils.unique_everseen(target.includies):
             args.add_include(include)
-        for option in set(target.options):
+        for option in megazord.utils.unique_everseen(target.options):
             args.add_option(option)
         return args
 

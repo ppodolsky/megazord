@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='megazord',
-      version='0.17.7',
+      version='0.17.8',
       description='Code Management System',
       author='Pasha Podolsky',
       author_email='ppodolsky@me.com',
