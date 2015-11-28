@@ -95,10 +95,10 @@ class CCompiler(GenericCompiler):
         for option in megazord.utils.unique_everseen(target.options):
             args.add_option(option)
         args.append('-O{}'.format(target.optimization_level))
-        args.set_output_name(target.output_dir + target.output)
-        args.set_target(target.get_sources(), target.output_format)
         if target.output_format in ['.so', '.dylib'] and not target.output.startswith('lib'):
             megazord.system.create_symlink(target.output_dir + target.output, target.output_dir + 'lib' + target.output)
+        args.set_output_name(target.output_dir + target.output)
+        args.set_target(target.get_sources(), target.output_format)
         compiled_lib_paths = []
         for dependency in target.dependencies:
             if dependency.output_format == '.o':
@@ -117,8 +117,10 @@ class CCompiler(GenericCompiler):
             args.add_library_path(lib_path)
         for include_path in megazord.utils.unique_everseen(target.include_paths):
             args.add_include_path(include_path)
+        args.append('--start-group')
         for library in megazord.utils.unique_everseen(target.libraries):
             args.add_library(library)
+        args.append('--end-group')
         for include in megazord.utils.unique_everseen(target.includies):
             args.add_include(include)
         return args
