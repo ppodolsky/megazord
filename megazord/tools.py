@@ -117,8 +117,10 @@ class CCompiler(GenericCompiler):
             args.add_library_path(lib_path)
         for include_path in megazord.utils.unique_everseen(target.include_paths):
             args.add_include_path(include_path)
-        for library in target.libraries:
+        args.append('-Wl,--start-group')
+        for library in megazord.utils.unique_everseen(target.libraries):
             args.add_library(library)
+        args.append('-Wl,--end-group')
         for include in megazord.utils.unique_everseen(target.includies):
             args.add_include(include)
         return args
