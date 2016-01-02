@@ -1,4 +1,4 @@
-__version__ = "0.1"
+__version__ = "0.18.0"
 __author__ = "Pasha Podolsky"
 __name__ = 'megazord'
 __homepage__ = "http://github.com/PashaPodolsky/megazord/"

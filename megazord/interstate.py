@@ -1,3 +1,7 @@
+"""
+Interstate stores caching data in .megazord subfolder
+"""
+
 import os
 import pickle
 import megazord
@@ -24,21 +28,21 @@ def is_init():
     return megazord.system.exists('.megazord')
 
 
-def mz(path):
+def mzdir(path):
     return ".megazord/{}".format(path)
 
 
 def load_object(path):
-    if not megazord.system.exists(mz(path)):
+    if not megazord.system.exists(mzdir(path)):
         return None
     else:
-        f = open(mz(path), "rb")
+        f = open(mzdir(path), "rb")
         result = pickle.load(f)
     return result
 
 
 def save_object(path, obj):
-    with open(mz(path), "wb+") as f:
+    with open(mzdir(path), "wb+") as f:
         result = pickle.dump(obj, f)
     return result
 

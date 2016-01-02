@@ -7,12 +7,21 @@ import re
 
 from .meta import *
 
+def vectorizer(func):
+    def vec_func(args):
+        if isinstance(args, list):
+            return list(map(func, args))
+        else:
+            return func(args)
+    return vec_func
+
 getwd = os.getcwd
 exists = os.path.exists
+abs_path = vectorizer(os.path.abspath)
 move = os.rename
 rename = os.rename
 setwd = os.chdir
-
+uname = os.uname().sysname.lower()
 
 def call(cmd, *args):
     t = [cmd]

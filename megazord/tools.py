@@ -70,6 +70,10 @@ class CCompiler(GenericCompiler):
             self.append('-f{}'.format(option))
             return self
 
+        def add_library_path(self, path):
+            self.append('-L{}'.format(path))
+            return self
+
         def set_output_name(self, name):
             self.append('-o{}'.format(name))
             return self
@@ -95,9 +99,14 @@ class CCompiler(GenericCompiler):
         for option in megazord.utils.unique_everseen(target.options):
             args.add_option(option)
         args.append('-O{}'.format(target.optimization_level))
-        if target.output_format in ['.so', '.dylib'] and not target.output.startswith('lib'):
-            megazord.system.create_symlink(target.output_dir + target.output, target.output_dir + 'lib' + target.output)
-        args.set_output_name(target.output_dir + target.output)
+        if target.output_format in ['.so', '.dylib']:
+            if not target.output.startswith('lib'):
+                megazord.system.warning("{} name doesn't start with 'lib'".format(target))
+                megazord.system.create_symlink(target.output, target.output_dir + 'lib' + target.output)
+            if megazord.system.uname == 'darwin':
+                args.append('-install_name')
+                args.append('@rpath/{}'.format(target.output))
+        args.set_output_name((target.output_dir if target.output_dir != './' else '') + target.output)
         args.set_target(target.get_sources(), target.output_format)
         compiled_lib_paths = []
         for dependency in target.dependencies:
@@ -114,7 +123,8 @@ class CCompiler(GenericCompiler):
                                  "Did you forget to set output format for dependency to '.o'?".format(
                     dependency.sources))
         for lib_path in megazord.utils.unique_everseen(compiled_lib_paths + target.library_paths):
-            args.add_library_path(lib_path)
+            args.add_library_path(megazord.system.abs_path(lib_path))
+            args.append('-Wl,-rpath,{}'.format(megazord.system.abs_path(lib_path)))
         for include_path in megazord.utils.unique_everseen(target.include_paths):
             args.add_include_path(include_path)
         for library in target.libraries:
