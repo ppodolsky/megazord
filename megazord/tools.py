@@ -70,10 +70,6 @@ class CCompiler(GenericCompiler):
             self.append('-f{}'.format(option))
             return self
 
-        def add_library_path(self, path):
-            self.append('-L{}'.format(path))
-            return self
-
         def set_output_name(self, name):
             self.append('-o{}'.format(name))
             return self

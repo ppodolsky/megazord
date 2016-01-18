@@ -17,7 +17,7 @@ class Target:
                  name=None,
                  forced=False):
         """
-        Construct a new 'Target' object.
+        Constructs a new 'Target' object.
 
         :param sources: string or list of strings or regexp string (i.e 'src/*.cpp') of sources
         :param output: string of output name
@@ -59,7 +59,7 @@ class Target:
 
     def add_include(self, names):
         """
-        Add include file
+        Adds include file
         :param names: string or list of strings
         :return: returns self
         """
@@ -71,7 +71,7 @@ class Target:
 
     def add_include_path(self, paths):
         """
-        Add include paths
+        Adds include paths
         :param paths: string or list of strings
         :return: returns self
         """
@@ -83,7 +83,7 @@ class Target:
 
     def add_library(self, names):
         """
-        Add libraries
+        Adds libraries
         :param names: string or list of strings
         :return: returns self
         """
@@ -95,7 +95,7 @@ class Target:
 
     def add_library_path(self, paths):
         """
-        Add library paths
+        Adds library paths
         :param paths: string or list of strings
         :return: returns self
         """
@@ -107,7 +107,7 @@ class Target:
 
     def add_options(self, options):
         """
-        Add compiler options (i.e if you want to use -fPIC for C compiler, call add_options('PIC'))
+        Adds compiler options (i.e if you want to use -fPIC for C compiler, call add_options('PIC'))
         :param options: string or list of strings
         :return: returns self
         """
@@ -119,7 +119,7 @@ class Target:
 
     def add_support(self, objs):
         """
-        Add set of headers and shared files for predefined libraries
+        Adds set of headers and shared files for predefined libraries
         Now python, python3, root are supported
         :param objs: string or list of strings
         :return: returns self
@@ -134,9 +134,9 @@ class Target:
 
     def assembly(self, forced=None):
         """
-        Assembly the Target
+        Assemblies instance of Target class
         :param forced: forced rebuild even if cached version is presented. Override class variable.
-        :return:
+        :return: returns self
         """
         if forced is None:
             forced = self.forced
@@ -161,9 +161,9 @@ class Target:
 
     def clear(self, cascade=False):
         """
-        Erase all generated files.
+        Erases all generated files.
         :param cascade: True if you want erase all dependencies files too.
-        :return:
+        :return: returns None
         """
         megazord.system.rm(self.output_dir + self.output)
         for dependency in self.dependencies:
@@ -171,9 +171,9 @@ class Target:
 
     def depends_on(self, args):
         """
-        Add another target as dependency.
+        Adds another target as dependency.
         :param args: string or list of strings.
-        :return:
+        :return: returns self
         """
         if isinstance(args, list):
             self.dependencies.extend(args)
@@ -182,6 +182,13 @@ class Target:
         return self
 
     def deploy_to(self, path, with_dependencies = True, exclude = None):
+        """
+        Deploys compiled target to some folder
+        :param path:
+        :param with_dependencies:
+        :param exclude:
+        :return:
+        """
         if not self.compiled:
             raise LookupError('Not compiled yet!')
         if with_dependencies:
@@ -214,13 +221,26 @@ class Target:
         return megazord.utils.reduce_hash(sorted(all_hashes), hashlib.md5)
 
     def get_sources(self):
+        """
+        :return: list of sources
+        """
         return self.sources
 
     def set_entry_point(self, entry_point):
+        """
+        Sets entry point for you application (actual for Java programs)
+        :param entry_point: name of the entry point
+        :return: returns self
+        """
         self.entry_point = entry_point
         return self
 
     def set_compiler(self, compiler):
+        """
+        Changes compiler for the target
+        :param compiler: new compiler
+        :return: returns self
+        """
         self.compiler = compiler
         if isinstance(self.compiler, megazord.GenericCompiler):
             pass
@@ -237,9 +257,9 @@ class Target:
 
     def set_name(self, name):
         """
-        Change reproducable name of target
+        Changes reproducable name of target
         :param name: new name
-        :return:
+        :return: returns self
         """
         if name is None:
             h = hashlib.md5()
@@ -251,18 +271,18 @@ class Target:
 
     def set_optimization_level(self, optimization_level):
         """
-        Set optimization level for your compiler (i.e from 0 to 3 for C compilers)
+        Sets optimization level for your compiler (i.e from 0 to 3 for C compilers)
         :param optimization_level:
-        :return:
+        :return: returns self
         """
         self.optimization_level = optimization_level
         return self
 
     def set_output(self, output):
         """
-        Set output file/directory for your compiler
+        Sets output file/directory for your compiler
         :param output:
-        :return:
+        :return: returns self
         """
         self.output = output
         if self.output is None:
@@ -285,11 +305,21 @@ class Target:
         return self
 
     def set_output_dir(self, dir):
+        """
+        Sets output directory for target (and creates it if doesn't exist)
+        :param dir:
+        :return: returns self
+        """
         self.output_dir = dir
         megazord.system.mkdir_p(dir)
         return self
 
     def set_sources(self, sources):
+        """
+        Sets list of sources for target
+        :param sources:
+        :return: returns self
+        """
         self.sources = []
         if isinstance(sources, str):
             sources = [sources]
